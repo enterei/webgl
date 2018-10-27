@@ -6,6 +6,7 @@ var cubes = [];
 var system_points = [];
 var modelViewLoc; //location of modelviewmatrix
 var vPositionLoc; //location of postionmatrix
+var scalingMatrixLoc // location of scaling Matrix
 var program;
 var selected = 10;
 
@@ -216,7 +217,22 @@ function rotation(center_cube) { // rotate a single cube about local coordinate 
 
 }
 
+function scalemyshit(center_cube){
+    var xf = center_cube[0]; //get distances to origin (0,0,0)
+    var yf = center_cube[1];
+    var zf = center_cube[2];
+    sc = scalem(scale);
+    sc[0][3]= -xf*scale[0]+xf;
+    sc[1][3]= -yf*scale[1]+yf;
+    sc[2][3]= -zf*scale[2]+zf;
 
+
+   /* sc[1][1]=scale[1];
+    sc[2][2]=scale[2];*/
+  return sc;
+  
+
+}
 
 
 //main function
@@ -282,6 +298,7 @@ function init() {
     //get locs of shader vars
     modelViewLoc = gl.getUniformLocation(program, "modelViewMatrix");
     vPosition = gl.getAttribLocation(program, "vPosition");
+    scalingMatrixLoc = gl.getUniformLocation(program, "scalingMatrix");
 
 
 
@@ -315,6 +332,7 @@ function draw(cube) {
     gl.vertexAttribPointer(vPosition, 4, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(vPosition);
     gl.uniformMatrix4fv(modelViewLoc, false, flatten(cube.ctm));
+    gl.uniformMatrix4fv(scalingMatrixLoc,false,flatten(cube.scalingMatrix));
 
     gl.drawArrays(gl.TRIANGLES, 0, NumVertices);
 
@@ -355,17 +373,21 @@ function render() {
     //transform all cubes
     if (selected == 10) {
         for (var i = 0; i < cubes.length; i++) {
-            cubes[i].ctm = mult(cubes[i].ctm, scalem(scale));
+            cubes[i].scalingMatrix = mult(cubes[i].scalingMatrix, scalemyshit(cubes[i].center));
             cubes[i].ctm = mult(cubes[i].ctm, glrotation());
 
             cubes[i].ctm = mult(cubes[i].ctm, translate(trans));
+
+            document.getElementById("p1").innerHTML= cubes[0].scalingMatrix[0][0]+" "+cubes[0].scalingMatrix[0][1]+" "+cubes[0].scalingMatrix[0][2];
+            document.getElementById("p2").innerHTML= cubes[0].scalingMatrix[1][0]+" "+cubes[0].scalingMatrix[1][1]+" "+cubes[0].scalingMatrix[1][2];
+            document.getElementById("p3").innerHTML= cubes[0].scalingMatrix[2][0]+" "+cubes[0].scalingMatrix[2][1]+" "+cubes[0].scalingMatrix[2][2];
 
         }
 
     }
     //transform selected cube
     else {
-        cubes[selected].ctm = mult(cubes[selected].ctm, scalem(scale));
+        cubes[selected].scalingMatrix = mult(cubes[selected].scalingMatrix, scalemyshit(cubes[selected].center));
 
         cubes[selected].ctm = mult(cubes[selected].ctm, rotation(cubes[selected].center));
         cubes[selected].ctm = mult(cubes[selected].ctm, translate(trans));
@@ -398,6 +420,7 @@ class Cube {
         this.colors = vertexColors;
         this.indices = cube_indices;
         this.ctm = mat4();
+        this.scalingMatrix=mat4();
         this.center = cubecenter(this.vertices);
         this.points = new Array();
 
