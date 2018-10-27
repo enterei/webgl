@@ -1,0 +1,50 @@
+
+<html>
+        <script type="text/javascript" src="webgl-utils.js"></script>
+        <script type="text/javascript" src="initShaders.js"></script>
+        <script type="text/javascript" src="MV.js"></script>
+        <script type="text/javascript" src="cube_02.js"></script>
+
+        <script id="vertex-shader" type="x-shader/x-vertex">
+            attribute vec4 vPosition;
+            attribute vec4 vColor;
+            varying vec4 fColor;
+            uniform mat4 modelViewMatrix;
+            void main()
+            {
+            fColor = vColor;
+            gl_Position = modelViewMatrix * vPosition;
+            }
+            </script>
+            
+            <script id="fragment-shader" type="x-shader/x-fragment">
+            
+            precision mediump float;
+            
+            varying vec4 fColor;
+            
+            void main()
+            {
+                gl_FragColor = fColor;
+            }
+            </script>
+<script>
+function myfunction(){
+    init();
+}
+</script>
+
+<body onload="myfunction()">
+    <canvas id="gl-canvas" width="512" height="512">
+    Oops ... your browser doesn't support the HTML5 canvas element
+    </canvas>
+
+    
+    </body>
+  
+
+<p id="p1">sorry i didnt figured out how to react to capital letters so the increasing of the scaling is as follow:</p>
+<p id="p2">'v' = width</p>
+<p id="p3">'b' = height</p>
+<p id="p3">'n' = depth</p>
+</html>
