@@ -378,9 +378,9 @@ function render() {
 
             cubes[i].ctm = mult(cubes[i].ctm, translate(trans));
 
-            document.getElementById("p1").innerHTML= cubes[0].scalingMatrix[0][0]+" "+cubes[0].scalingMatrix[0][1]+" "+cubes[0].scalingMatrix[0][2];
+           /* document.getElementById("p1").innerHTML= cubes[0].scalingMatrix[0][0]+" "+cubes[0].scalingMatrix[0][1]+" "+cubes[0].scalingMatrix[0][2];
             document.getElementById("p2").innerHTML= cubes[0].scalingMatrix[1][0]+" "+cubes[0].scalingMatrix[1][1]+" "+cubes[0].scalingMatrix[1][2];
-            document.getElementById("p3").innerHTML= cubes[0].scalingMatrix[2][0]+" "+cubes[0].scalingMatrix[2][1]+" "+cubes[0].scalingMatrix[2][2];
+            document.getElementById("p3").innerHTML= cubes[0].scalingMatrix[2][0]+" "+cubes[0].scalingMatrix[2][1]+" "+cubes[0].scalingMatrix[2][2];*/
 
         }
 
